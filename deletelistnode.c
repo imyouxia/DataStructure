@@ -94,7 +94,22 @@ llink deletenode(llink head,llink ptr)
 			//结点在中间
 			previous->next = ptr->next;   //中间结点
 	}
+	free(ptr);  //释放结点内存
 	return head;
+}
+
+/* 链表的内存释放 */
+
+int freellist(llink head)
+{
+	llink ptr;
+	while(head != NULL)  //遍历链表循环
+	{
+		ptr = head;
+		head = head->next; //指向下一结点
+		free(ptr);   //释放结点内存
+	}
+	return 0;
 }
 
 int main()
@@ -132,7 +147,8 @@ int main()
 		else
 			exit(1);   
 	}
-
+	
+	freellist(head);   //释放链表内存
 	return 0;
 }
 
