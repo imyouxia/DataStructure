@@ -81,7 +81,7 @@ void preorder(btree ptr)
 	}
 }
 
-/* 主程序：创建二叉树且用中序遍历输出 */
+/* 主程序：创建二叉树且用前序遍历输出 */
 int main()
 {
 	btree root = NULL;   //树根指针
@@ -90,7 +90,7 @@ int main()
 	int data[9] = {5,6,4,8,2,3,7,1,9};
 	root = createbtree(data,9);
 	printf("树的结点内容\n");
-	preorder(root);   //中序遍历二叉树
+	preorder(root);   //前序遍历二叉树
 	return 0;
 
 }
