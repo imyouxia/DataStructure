@@ -1,4 +1,7 @@
-/* 顺序查找法 */
+/* 顺序查找法
+ * 需要检查数组的边界
+ */
+
 
 #include <stdio.h>
 #include <stdlib.h>
