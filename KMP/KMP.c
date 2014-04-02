@@ -17,3 +17,21 @@ void kmpGetNext()
 
 }
 
+
+// 算导：
+
+COMPUTE-PREFIX-FUNCTION(P)
+
+m = P.length
+let B[1..m] be a new array
+B[1] = 0
+k = 0
+
+for q = 2 to m
+	while k > 0 and P[k+1] != P[q]
+		k = B[k]
+	if P[k+1] == P[q]
+		k = k+1
+	B[q] = k
+return B
+
