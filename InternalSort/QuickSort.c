@@ -81,6 +81,7 @@ int main()
 	gets(string);   //读取字符串
 	count = strlen(string);	//计算字符串长度
 	quick(string,count);
+	
 	//输出排序后字符串
 	printf("\n输出排序结果：[%s]\n",string);
 	return 0;
