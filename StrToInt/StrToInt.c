@@ -27,6 +27,7 @@ int StrToInt(const char* str)
 	return (int)num;
 }
 
+
 long long StrToIntCore(const char* digit,bool minus)
 {
 	long long num = 0;
