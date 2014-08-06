@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include <cstdio>
 using namespace std;
 
 #define IPLEN 16  // 设输入ip地址长度不超过16
@@ -42,9 +43,66 @@ int ipToUnint(char *ip,unsigned int &result)
 
     for(int ipIdx = 0; ; ++ ipIdx)
     {
-    
+        input = ip[ipIdx];
+        if(input >= '0' && input <= '9') //数字
+        {
+            ++digitNum;
+            digit = 10 * digit + (input - '0');
+            if(digit > 255 || digit < 0) //数字非法或长度过长
+            {
+                return OVER_BOUNDARY;
+            }
+            else if(input == '.')  //遇点，合并部分结果
+            {
+                ++dotNum;
+                if(dotNum > digitNum) // 诸如 ..0.1 or 4..0.1
+                {
+                    return INVALID_FORM;
+                }
+                else //合并
+                {
+                    result = (result << 8) | digit;
+                    digit = 0;
+                }
+            }
+            else if(input == '\0')   //结束符，检查点数，返回结果
+            {
+                if(dotNum != 3)
+                {
+                    return INVALID_FORM;
+                }
+                else
+                {
+                    result = (result << 8) + digit;
+                    return SUCCESS;
+                }
+            }
+            else  //非法输入
+            {
+                return INVALID_CHAR;
+            }
+        }
     }
     
-
 }
 
+int main()
+{
+    char ipStr[IPLEN] = {};
+    //string input = "";
+    //cin>>input;
+    //sscanf(input.c_str,"15%s",ipStr);
+
+   // scanf("%s",ipStr);
+    unsigned int result = 0;
+    int state = ipToUnint(ipStr,result);
+    if(state == SUCCESS)
+    {
+        printf("result: %d\n",result);
+    }
+    else
+    {
+        printf("%s\n",ERR_Strings[state]);
+    }
+    return 0;
+}
