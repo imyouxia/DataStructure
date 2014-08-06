@@ -1,3 +1,9 @@
+/*
+ * sscanf(ipstr,"%d.%d.%d.%d",&a,&b,&c,%d);
+ * return (a << 24) | (b << 16) | (c << 8) | d;
+ *
+ */
+
 #include <iostream>
 #include <string>
 #include <cstdio>
@@ -40,7 +46,6 @@ int ipToUnint(char *ip,unsigned int &result)
     int dotNum = 0;   // num of dot
     int digitNum = 0;  // num of digit
     char input = 0;
-
     for(int ipIdx = 0; ; ++ ipIdx)
     {
         input = ip[ipIdx];
@@ -52,35 +57,35 @@ int ipToUnint(char *ip,unsigned int &result)
             {
                 return OVER_BOUNDARY;
             }
-            else if(input == '.')  //遇点，合并部分结果
+        }
+        else if(input == '.')  //遇点，合并部分结果
+        {
+            ++dotNum;
+            if(dotNum > digitNum) // 诸如 ..0.1 or 4..0.1
             {
-                ++dotNum;
-                if(dotNum > digitNum) // 诸如 ..0.1 or 4..0.1
-                {
-                    return INVALID_FORM;
-                }
-                else //合并
-                {
-                    result = (result << 8) | digit;
-                    digit = 0;
-                }
+                return INVALID_FORM;
             }
-            else if(input == '\0')   //结束符，检查点数，返回结果
+            else //合并
             {
-                if(dotNum != 3)
-                {
-                    return INVALID_FORM;
-                }
-                else
-                {
-                    result = (result << 8) + digit;
-                    return SUCCESS;
-                }
+                result = (result << 8) | digit;
+                digit = 0;
             }
-            else  //非法输入
+        }
+        else if(input == '\0')   //结束符，检查点数，返回结果
+        {
+            if(dotNum != 3)
             {
-                return INVALID_CHAR;
+                return INVALID_FORM;
             }
+            else
+            {
+                result = (result << 8) + digit;
+                return SUCCESS;
+            }
+        }
+        else  //非法输入
+        {
+            return INVALID_CHAR;
         }
     }
     
@@ -88,17 +93,17 @@ int ipToUnint(char *ip,unsigned int &result)
 
 int main()
 {
-    char ipStr[IPLEN] = {};
-    //string input = "";
-    //cin>>input;
-    //sscanf(input.c_str,"15%s",ipStr);
+    char ipStr[IPLEN];
+    string input = "";
+    cin>>input;
+    sscanf(input.c_str(),"%15s",ipStr);
 
-   // scanf("%s",ipStr);
     unsigned int result = 0;
+    //printf("%s\n",ipStr);
     int state = ipToUnint(ipStr,result);
     if(state == SUCCESS)
     {
-        printf("result: %d\n",result);
+        printf("result: %X\n",result);
     }
     else
     {
